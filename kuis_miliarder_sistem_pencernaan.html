@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Siapa Mau Jadi Miliarder - Sistem Pencernaan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Orbitron -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-glow: #0284c7;
+            --gold-glow: #f59e0b;
+            --stage-bg: radial-gradient(circle at center, #0a1435 0%, #030718 70%, #00020a 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--stage-bg);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-tech {
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Millionaire Hexagonal / Angled Bevel Shape */
+        .millionaire-box {
+            position: relative;
+            background: linear-gradient(180deg, #091a42 0%, #030b20 100%);
+            border: 2px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.25), inset 0 0 12px rgba(56, 189, 248, 0.15);
+            clip-path: polygon(18px 0%, calc(100% - 18px) 0%, 100% 50%, calc(100% - 18px) 100%, 18px 100%, 0% 50%);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .millionaire-btn {
+            position: relative;
+            background: linear-gradient(180deg, #0d2257 0%, #050d24 100%);
+            border: 2px solid #2563eb;
+            clip-path: polygon(16px 0%, calc(100% - 16px) 0%, 100% 50%, calc(100% - 16px) 100%, 16px 100%, 0% 50%);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.18s ease;
+        }
+
+        .millionaire-btn:hover:not(:disabled) {
+            background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 100%);
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Pulsing Answer States */
+        .btn-selected {
+            background: linear-gradient(180deg, #b45309 0%, #78350f 100%) !important;
+            border-color: #fbbf24 !important;
+            box-shadow: 0 0 25px #f59e0b, inset 0 0 15px #f59e0b !important;
+            animation: pulse-orange 0.9s infinite alternate;
+        }
+
+        .btn-correct {
+            background: linear-gradient(180deg, #15803d 0%, #14532d 100%) !important;
+            border-color: #4ade80 !important;
+            box-shadow: 0 0 30px #22c55e, inset 0 0 15px #22c55e !important;
+            animation: flash-green 0.4s 3 alternate;
+        }
+
+        .btn-wrong {
+            background: linear-gradient(180deg, #b91c1c 0%, #7f1d1d 100%) !important;
+            border-color: #f87171 !important;
+            box-shadow: 0 0 30px #ef4444, inset 0 0 15px #ef4444 !important;
+        }
+
+        .btn-eliminated {
+            opacity: 0.18;
+            pointer-events: none;
+            filter: grayscale(80%);
+        }
+
+        @keyframes pulse-orange {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.02); filter: brightness(1.3); }
+        }
+
+        @keyframes flash-green {
+            0% { filter: brightness(1); }
+            100% { filter: brightness(1.6); }
+        }
+
+        /* Ambient Studio Light Cone */
+        .studio-spotlight {
+            background: radial-gradient(circle 500px at 50% -10%, rgba(56, 189, 248, 0.15), transparent 70%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen selection:bg-amber-500 selection:text-black studio-spotlight">
+
+    <!-- Header / Navbar -->
+    <header class="w-full border-b border-sky-950/60 bg-slate-950/70 backdrop-blur-md px-4 sm:px-8 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border-2 border-amber-400 bg-gradient-to-br from-blue-900 to-indigo-950 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-graduation-cap text-amber-400 text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-cinzel text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 tracking-wider">
+                    SISTEM PENCERNAAN
+                </h1>
+                <p class="text-[10px] sm:text-xs text-sky-400 font-semibold tracking-widest uppercase">Kuis Siapa Mau Jadi Miliarder</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-4">
+            <!-- Active Player Badge on Navbar (Hidden on start screen) -->
+            <div id="playerNavBadge" class="hidden sm:hidden items-center gap-2 px-3 py-1 bg-slate-900/90 border border-sky-800 rounded-lg text-xs">
+                <i class="fa-solid fa-user-graduate text-amber-400"></i>
+                <span id="playerNavName" class="font-bold text-sky-200 truncate max-w-[120px]">Peserta</span>
+                <span id="playerNavClass" class="text-amber-300 font-semibold bg-amber-950/60 px-1.5 py-0.5 rounded text-[10px]">Kelas</span>
+            </div>
+
+            <!-- Audio Toggle -->
+            <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3 py-1.5 rounded-lg border border-sky-800 bg-slate-900/80 hover:bg-sky-950 text-sky-300 text-xs sm:text-sm font-semibold flex items-center gap-2 transition" title="Aktif/Nonaktifkan Suara">
+                <i id="soundIcon" class="fa-solid fa-volume-high text-amber-400"></i>
+                <span class="hidden sm:inline" id="soundLabel">Suara Aktif</span>
+            </button>
+
+            <!-- Mobile Ladder Drawer Toggle -->
+            <button id="ladderDrawerBtn" onclick="toggleLadderDrawer()" class="lg:hidden px-3 py-1.5 rounded-lg border border-amber-600/50 bg-amber-950/30 hover:bg-amber-900/50 text-amber-400 text-xs sm:text-sm font-semibold flex items-center gap-2 transition">
+                <i class="fa-solid fa-list-ol"></i>
+                <span id="mobilePrizeDisplay">Rp 0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 relative max-w-7xl mx-auto w-full">
+
+        <!-- ================= 1. START / WELCOME SCREEN ================= -->
+        <section id="startScreen" class="w-full max-w-3xl text-center py-6 px-4 sm:px-8 my-auto flex flex-col items-center animate-fade-in">
+            <!-- Millionaire Circular Badge Logo -->
+            <div class="relative w-44 h-44 sm:w-56 sm:h-56 mb-6 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-amber-400/80 shadow-[0_0_40px_rgba(245,158,11,0.35)] animate-spin-slow"></div>
+                <div class="absolute inset-3 rounded-full border-2 border-sky-400/60 border-dashed"></div>
+                <div class="w-36 h-36 sm:w-48 sm:h-48 rounded-full bg-gradient-to-tr from-blue-950 via-slate-900 to-indigo-950 border-4 border-amber-300 flex flex-col items-center justify-center p-4 shadow-2xl shadow-sky-900/50">
+                    <span class="text-amber-400 font-cinzel text-xs font-bold tracking-widest uppercase">Edisi Biologi</span>
+                    <i class="fa-solid fa-dna text-3xl sm:text-4xl text-sky-400 my-1 animate-pulse"></i>
+                    <span class="text-white font-tech text-base sm:text-lg font-black tracking-wider text-center leading-tight">MILIARDER</span>
+                    <span class="text-[10px] text-amber-300 font-semibold">15 SOAL ILMIAH</span>
+                </div>
+            </div>
+
+            <h2 class="font-cinzel text-2xl sm:text-4xl font-extrabold text-white tracking-wide mb-3">
+                Uji Kompetensi: Sistem Pencernaan
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-6 leading-relaxed">
+                Tantang pengetahuan biologi Anda seputar organ, enzim, dan mekanisme pencernaan makanan. Jawab 15 soal bertingkat untuk mencapai hadiah utama <span class="text-amber-400 font-bold">Rp 1 Miliar</span>!
+            </p>
+
+            <!-- Student Identity Input Form Card -->
+            <div class="w-full max-w-md bg-slate-900/95 border-2 border-sky-500/70 shadow-[0_0_25px_rgba(56,189,248,0.25)] rounded-2xl p-5 mb-6 text-left backdrop-blur-md">
+                <div class="flex items-center gap-2 text-amber-400 font-bold text-sm mb-3 border-b border-slate-800 pb-2">
+                    <i class="fa-solid fa-id-card"></i> Identitas Peserta Kuis
+                </div>
+                <div class="space-y-3.5">
+                    <div>
+                        <label for="inputStudentName" class="block text-xs font-semibold text-slate-300 mb-1">
+                            Nama Lengkap Siswa <span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-sky-400">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="inputStudentName" placeholder="Contoh: Muhammad Bintang" maxlength="35"
+                                class="w-full pl-9 pr-3 py-2.5 bg-slate-950 border border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl text-sm text-white placeholder-slate-500 outline-none transition" />
+                        </div>
+                    </div>
+                    <div>
+                        <label for="inputStudentClass" class="block text-xs font-semibold text-slate-300 mb-1">
+                            Kelas / Tingkat <span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-sky-400">
+                                <i class="fa-solid fa-school"></i>
+                            </span>
+                            <input type="text" id="inputStudentClass" placeholder="Contoh: 8A / XI IPA 2" maxlength="20"
+                                class="w-full pl-9 pr-3 py-2.5 bg-slate-950 border border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl text-sm text-white placeholder-slate-500 outline-none transition" />
+                        </div>
+                    </div>
+                </div>
+                <p id="formErrorMsg" class="hidden text-xs text-red-400 font-semibold mt-2.5 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-exclamation"></i> Harap isi Nama dan Kelas terlebih dahulu sebelum bermain!
+                </p>
+            </div>
+
+            <!-- Rules Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full max-w-2xl mb-8 text-left">
+                <div class="bg-slate-900/80 border border-sky-900/60 p-3.5 rounded-xl">
+                    <div class="text-amber-400 font-bold text-xs uppercase flex items-center gap-1.5 mb-1">
+                        <i class="fa-solid fa-shield-halved"></i> 2 Titik Aman
+                    </div>
+                    <p class="text-xs text-slate-300">Level 5 (Rp 1 Juta) & Level 10 (Rp 32 Juta). Hadiah aman jika salah di tingkat atas.</p>
+                </div>
+                <div class="bg-slate-900/80 border border-sky-900/60 p-3.5 rounded-xl">
+                    <div class="text-sky-400 font-bold text-xs uppercase flex items-center gap-1.5 mb-1">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> 4 Bantuan
+                    </div>
+                    <p class="text-xs text-slate-300">Gunakan 50:50, Tanya Penonton, Telepon Teman Ahli, atau Ganti Soal saat ragu.</p>
+                </div>
+                <div class="bg-slate-900/80 border border-sky-900/60 p-3.5 rounded-xl">
+                    <div class="text-emerald-400 font-bold text-xs uppercase flex items-center gap-1.5 mb-1">
+                        <i class="fa-solid fa-book-open"></i> Pembahasan
+                    </div>
+                    <p class="text-xs text-slate-300">Disertai ulasan ilmiah mendalam dari modul resmi guru setelah setiap jawaban.</p>
+                </div>
+            </div>
+
+            <button onclick="startGame()" class="group relative px-10 py-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-lg rounded-full shadow-[0_0_35px_rgba(245,158,11,0.5)] transform hover:scale-105 active:scale-95 transition-all">
+                <span class="flex items-center gap-3">
+                    <i class="fa-solid fa-play"></i> MULAI PERMAINAN
+                </span>
+            </button>
+        </section>
+
+        <!-- ================= 2. ACTIVE QUIZ PLAYGROUND ================= -->
+        <section id="quizScreen" class="w-full hidden grid-cols-1 lg:grid-cols-12 gap-6 my-auto items-start">
+            
+            <!-- Left & Center: Question Stage & Answer Grid (cols 8) -->
+            <div class="lg:col-span-8 flex flex-col w-full">
+                
+                <!-- Top Lifeline Bar -->
+                <div class="flex items-center justify-between bg-slate-950/70 border border-sky-900/80 rounded-2xl px-4 py-3 mb-5 shadow-lg backdrop-blur-sm">
+                    <div class="text-xs font-semibold text-slate-400 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-400 font-bold font-tech text-sm" id="questionLevelLabel">SOAL 1</span>
+                            <span class="text-slate-600 hidden sm:inline">|</span>
+                            <span class="text-sky-300 font-bold max-w-[140px] truncate" id="activeStudentLabel">Siswa</span>
+                            <span class="text-[10px] bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded border border-sky-800" id="activeClassLabel">Kelas</span>
+                        </div>
+                        <div class="text-[11px] sm:text-xs">
+                            <span class="hidden sm:inline">Peluang Hadiah:</span>
+                            <span class="text-yellow-400 font-bold font-tech" id="currentPrizeLabel">Rp 50.000</span>
+                        </div>
+                    </div>
+
+                    <!-- 4 Lifeline Buttons -->
+                    <div class="flex items-center gap-2 sm:gap-3">
+                        <!-- 50:50 -->
+                        <button id="lifeline5050" onclick="use5050()" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-amber-400 bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-amber-300 font-tech font-bold text-xs flex items-center justify-center transition shadow-md shadow-amber-950" title="Bantuan 50:50 (Hilangkan 2 pilihan salah)">
+                            50:50
+                        </button>
+                        <!-- Tanya Penonton -->
+                        <button id="lifelineAudience" onclick="useAudience()" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-sky-400 bg-slate-900 hover:bg-sky-500 hover:text-slate-950 text-sky-300 text-sm flex items-center justify-center transition shadow-md shadow-sky-950" title="Tanya Penonton">
+                            <i class="fa-solid fa-users"></i>
+                        </button>
+                        <!-- Telepon Teman -->
+                        <button id="lifelinePhone" onclick="usePhone()" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-emerald-400 bg-slate-900 hover:bg-emerald-500 hover:text-slate-950 text-emerald-300 text-sm flex items-center justify-center transition shadow-md shadow-emerald-950" title="Telepon Teman Ahli">
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
+                        <!-- Ganti Soal -->
+                        <button id="lifelineSwitch" onclick="useSwitch()" class="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-purple-400 bg-slate-900 hover:bg-purple-500 hover:text-slate-950 text-purple-300 text-sm flex items-center justify-center transition shadow-md shadow-purple-950" title="Ganti Soal yang Berbeda">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hexagonal Question Frame -->
+                <div class="w-full mb-6">
+                    <div class="millionaire-box w-full p-5 sm:p-7 min-h-[120px] flex items-center justify-center text-center">
+                        <p id="questionText" class="text-base sm:text-xl font-bold text-slate-100 tracking-wide leading-relaxed">
+                            Memuat butir soal biologi...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Answer Options (2x2 Grid with classic hexagonal look) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4 mb-6">
+                    <!-- Option A -->
+                    <button id="btnOptA" onclick="handleOptionSelect('A')" class="millionaire-btn px-6 py-4 text-left flex items-center group disabled:opacity-50">
+                        <span class="w-8 font-tech font-extrabold text-amber-400 text-lg group-hover:text-amber-300">A:</span>
+                        <span id="labelOptA" class="text-sm sm:text-base font-semibold text-slate-100 flex-1 leading-snug">Opsi Jawaban A</span>
+                    </button>
+                    <!-- Option B -->
+                    <button id="btnOptB" onclick="handleOptionSelect('B')" class="millionaire-btn px-6 py-4 text-left flex items-center group disabled:opacity-50">
+                        <span class="w-8 font-tech font-extrabold text-amber-400 text-lg group-hover:text-amber-300">B:</span>
+                        <span id="labelOptB" class="text-sm sm:text-base font-semibold text-slate-100 flex-1 leading-snug">Opsi Jawaban B</span>
+                    </button>
+                    <!-- Option C -->
+                    <button id="btnOptC" onclick="handleOptionSelect('C')" class="millionaire-btn px-6 py-4 text-left flex items-center group disabled:opacity-50">
+                        <span class="w-8 font-tech font-extrabold text-amber-400 text-lg group-hover:text-amber-300">C:</span>
+                        <span id="labelOptC" class="text-sm sm:text-base font-semibold text-slate-100 flex-1 leading-snug">Opsi Jawaban C</span>
+                    </button>
+                    <!-- Option D -->
+                    <button id="btnOptD" onclick="handleOptionSelect('D')" class="millionaire-btn px-6 py-4 text-left flex items-center group disabled:opacity-50">
+                        <span class="w-8 font-tech font-extrabold text-amber-400 text-lg group-hover:text-amber-300">D:</span>
+                        <span id="labelOptD" class="text-sm sm:text-base font-semibold text-slate-100 flex-1 leading-snug">Opsi Jawaban D</span>
+                    </button>
+                </div>
+
+                <!-- Walk Away / Bawa Pulang Uang Option -->
+                <div class="flex items-center justify-between border-t border-slate-800/80 pt-4">
+                    <button onclick="confirmWalkAway()" class="px-4 py-2 rounded-xl border border-red-500/40 bg-red-950/20 hover:bg-red-900/40 text-red-300 text-xs sm:text-sm font-semibold flex items-center gap-2 transition">
+                        <i class="fa-solid fa-door-open"></i> Menyerah & Bawa Pulang Hadiah
+                    </button>
+                    <span class="text-xs text-slate-400 italic">Pilihlah jawaban dengan cermat!</span>
+                </div>
+            </div>
+
+            <!-- Right: Money Tree / Prize Ladder (cols 4) -->
+            <div id="ladderDesktopContainer" class="hidden lg:flex lg:col-span-4 flex-col bg-slate-950/80 border border-sky-900/70 rounded-2xl p-4 shadow-xl backdrop-blur-md">
+                <div class="text-center pb-3 border-b border-sky-900/60 mb-2">
+                    <span class="text-xs font-bold text-sky-400 uppercase tracking-widest font-tech">Tangga Hadiah (Pohon Uang)</span>
+                </div>
+                <div id="ladderList" class="flex flex-col-reverse gap-1 text-xs font-tech">
+                    <!-- Dynamic Ladder Items injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 3. GAME OVER / VICTORY SUMMARY SCREEN ================= -->
+        <section id="resultScreen" class="w-full max-w-2xl hidden flex-col items-center text-center py-8 px-4 my-auto animate-fade-in">
+            <div id="resultBadge" class="w-24 h-24 rounded-full border-4 border-amber-400 bg-amber-500/10 flex items-center justify-center text-4xl text-amber-400 mb-4 shadow-[0_0_30px_rgba(245,158,11,0.4)]">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+
+            <!-- Student Identity on Certificate / Result -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-400/50 text-amber-300 text-xs font-semibold mb-3">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span id="resultStudentName">Nama Siswa</span> &bull; <span id="resultStudentClass">Kelas</span>
+            </div>
+
+            <h2 id="resultTitle" class="font-cinzel text-3xl sm:text-4xl font-extrabold text-white mb-2">
+                Selamat! Anda Miliarder!
+            </h2>
+            <p id="resultSubtitle" class="text-slate-300 text-sm sm:text-base mb-6">
+                Luar biasa! Anda berhasil menguasai seluruh materi Sistem Pencernaan Manusia.
+            </p>
+
+            <!-- Prize Container -->
+            <div class="w-full bg-slate-900/90 border border-amber-500/50 rounded-2xl p-6 mb-6 shadow-2xl">
+                <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Hadiah Yang Diperoleh</span>
+                <div id="resultPrizeAmount" class="font-tech text-3xl sm:text-5xl font-black text-amber-400 my-2">
+                    Rp 1.000.000.000
+                </div>
+                <div class="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300">
+                    <div>Soal Terjawab: <span id="statAnswered" class="font-bold text-sky-400">15 / 15</span></div>
+                    <div>Bantuan Dipakai: <span id="statLifelines" class="font-bold text-purple-400">2 / 4</span></div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-3 w-full">
+                <button onclick="startGame()" class="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-rotate-right"></i> Main Lagi
+                </button>
+                <button onclick="openReviewModal()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-600/50 font-bold rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> Lihat Pembahasan Soal
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= MODALS & POPUPS ================= -->
+
+    <!-- Modal 1: Tanya Penonton (Audience Poll) -->
+    <div id="audienceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-sky-400 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center animate-scale-up">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <div class="flex items-center gap-2 text-sky-400 font-bold text-base">
+                    <i class="fa-solid fa-users"></i> Hasil Polling Penonton Studio
+                </div>
+                <button onclick="closeModal('audienceModal')" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 mb-6">Berikut adalah persentase pilihan dari 100 penonton di studio:</p>
+
+            <div class="flex items-end justify-between h-48 px-4 pb-2 border-b border-slate-700 gap-3 mb-4">
+                <!-- Bar A -->
+                <div class="flex-1 flex flex-col items-center h-full justify-end">
+                    <span id="pollPctA" class="text-xs font-bold text-amber-400 mb-1">0%</span>
+                    <div id="pollBarA" class="w-full bg-gradient-to-t from-sky-700 to-sky-400 rounded-t-md transition-all duration-700" style="height: 0%"></div>
+                    <span class="text-xs font-tech font-bold mt-2">A</span>
+                </div>
+                <!-- Bar B -->
+                <div class="flex-1 flex flex-col items-center h-full justify-end">
+                    <span id="pollPctB" class="text-xs font-bold text-amber-400 mb-1">0%</span>
+                    <div id="pollBarB" class="w-full bg-gradient-to-t from-sky-700 to-sky-400 rounded-t-md transition-all duration-700" style="height: 0%"></div>
+                    <span class="text-xs font-tech font-bold mt-2">B</span>
+                </div>
+                <!-- Bar C -->
+                <div class="flex-1 flex flex-col items-center h-full justify-end">
+                    <span id="pollPctC" class="text-xs font-bold text-amber-400 mb-1">0%</span>
+                    <div id="pollBarC" class="w-full bg-gradient-to-t from-sky-700 to-sky-400 rounded-t-md transition-all duration-700" style="height: 0%"></div>
+                    <span class="text-xs font-tech font-bold mt-2">C</span>
+                </div>
+                <!-- Bar D -->
+                <div class="flex-1 flex flex-col items-center h-full justify-end">
+                    <span id="pollPctD" class="text-xs font-bold text-amber-400 mb-1">0%</span>
+                    <div id="pollBarD" class="w-full bg-gradient-to-t from-sky-700 to-sky-400 rounded-t-md transition-all duration-700" style="height: 0%"></div>
+                    <span class="text-xs font-tech font-bold mt-2">D</span>
+                </div>
+            </div>
+
+            <button onclick="closeModal('audienceModal')" class="w-full py-2.5 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-xl text-sm transition">
+                Kembali ke Soal
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal 2: Telepon Teman (Phone a Friend) -->
+    <div id="phoneModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-emerald-400 rounded-2xl max-w-md w-full p-6 shadow-2xl text-left animate-scale-up">
+            <div class="flex items-center gap-3 pb-4 border-b border-slate-800 mb-4">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-400 flex items-center justify-center text-emerald-400 text-xl">
+                    <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-emerald-400 text-base">Dr. Farhan, M.Biomed</h3>
+                    <p class="text-xs text-slate-400">Spesialis Fisiologi & Sistem Pencernaan</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-950/80 rounded-xl p-4 border border-slate-800 mb-5 text-sm text-slate-200 leading-relaxed font-sans">
+                <i class="fa-solid fa-quote-left text-emerald-500 text-lg mr-2 opacity-60"></i>
+                <span id="friendResponseText">"Halo! Menurut materi fisiologi yang saya pelajari, jawaban yang paling tepat dan meyakinkan adalah..."</span>
+            </div>
+
+            <button onclick="closeModal('phoneModal')" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-sm transition">
+                Terima Kasih, Lanjutkan Kuis
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal 3: Penjelasan Ilmiah / Feedback Modal Pasca Jawab -->
+    <div id="explanationModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-amber-400 rounded-2xl max-w-lg w-full p-6 shadow-2xl text-left animate-scale-up">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <span id="feedbackIcon" class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm bg-green-600 font-bold">
+                        <i class="fa-solid fa-check"></i>
+                    </span>
+                    <h3 id="feedbackTitle" class="text-base font-bold text-white">Jawaban Tepat!</h3>
+                </div>
+                <span id="explanationBadge" class="text-xs font-tech px-2.5 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-md">LEVEL 1</span>
+            </div>
+
+            <div class="mb-4">
+                <span class="text-xs uppercase text-slate-400 font-semibold tracking-wider">Kunci Jawaban:</span>
+                <p id="correctAnswerFull" class="text-sm font-bold text-emerald-400 mt-0.5">D. Mencerna makanan</p>
+            </div>
+
+            <div class="bg-slate-950 p-4 rounded-xl border border-sky-950/90 mb-5">
+                <span class="text-xs uppercase text-amber-400 font-bold tracking-wider flex items-center gap-1.5 mb-1.5">
+                    <i class="fa-solid fa-microscope"></i> Pembahasan Lengkap Guru:
+                </span>
+                <p id="explanationContent" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Pembahasan ilmiah materi sistem pencernaan...
+                </p>
+            </div>
+
+            <button id="nextQuestionBtn" onclick="proceedAfterExplanation()" class="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black rounded-xl text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                <span>Lanjut ke Soal Berikutnya</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal 4: Full Review Modul Kuis (Review Soal) -->
+    <div id="reviewModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-sky-700 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl animate-scale-up">
+            <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2 font-bold text-sky-400 text-lg">
+                    <i class="fa-solid fa-book-open"></i> Pembahasan Soal yang Dihadapi
+                </div>
+                <button onclick="closeModal('reviewModal')" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="reviewList" class="p-5 overflow-y-auto space-y-4 flex-1">
+                <!-- Dynamically generated list -->
+            </div>
+
+            <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex justify-end">
+                <button onclick="closeModal('reviewModal')" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-sm font-semibold">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Drawer for Money Tree -->
+    <div id="mobileLadderDrawer" class="fixed inset-y-0 right-0 w-72 bg-slate-950 border-l border-sky-800/80 z-50 p-4 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl lg:hidden">
+        <div class="flex items-center justify-between pb-3 border-b border-sky-900 mb-3">
+            <span class="font-tech text-xs font-bold text-amber-400 uppercase">Pohon Hadiah</span>
+            <button onclick="toggleLadderDrawer()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="ladderListMobile" class="flex flex-col-reverse gap-1 text-xs font-tech flex-1 overflow-y-auto">
+            <!-- Mobile ladder list -->
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================
+           1. MASTER QUESTION BANK (MODUL 5 A & B - 40 SOAL LENGKAP)
+           ========================================================== */
+        const MASTER_QUESTIONS = [
+            // --- BAGIAN A (1 - 20) ---
+            {
+                q: "Apa fungsi utama sistem pencernaan pada makhluk hidup?",
+                options: { A: "Menghasilkan oksigen", B: "Mengangkut nutrisi", C: "Mengatur suhu tubuh", D: "Mencerna makanan" },
+                answer: "D",
+                explanation: "Fungsi utama sistem pencernaan adalah mencerna makanan menjadi zat-zat yang lebih sederhana agar bisa diserap oleh tubuh."
+            },
+            {
+                q: "Bagian tubuh mana yang pertama kali mengolah makanan secara mekanis?",
+                options: { A: "Usus halus", B: "Mulut", C: "Lambung", D: "Kerongkongan" },
+                answer: "B",
+                explanation: "Makanan pertama kali diolah secara mekanis di dalam rongga mulut, melalui proses pengunyahan oleh gigi dan pencampuran dengan air liur."
+            },
+            {
+                q: "Enzim-enzim dalam sistem pencernaan bertanggung jawab untuk melakukan apa?",
+                options: { A: "Menghasilkan energi", B: "Mengatur detoksifikasi", C: "Memproduksi sel darah merah", D: "Mencerna makanan" },
+                answer: "D",
+                explanation: "Enzim pencernaan berfungsi sebagai katalis biokimiawi untuk memecah molekul makanan makronutrien menjadi molekul-molekul kecil yang dapat diserap."
+            },
+            {
+                q: "Di mana sebagian besar penyerapan nutrisi dari makanan terjadi?",
+                options: { A: "Mulut", B: "Lambung", C: "Usus halus", D: "Usus besar" },
+                answer: "C",
+                explanation: "Sebagian besar penyerapan nutrisi makanan berlangsung di usus halus (terutama jejunum dan ileum) melalui tonjolan vili usus ke aliran darah."
+            },
+            {
+                q: "Apa fungsi utama asam lambung (HCl) dalam sistem pencernaan?",
+                options: { A: "Mencerna karbohidrat", B: "Melindungi dinding lambung", C: "Membantu penyerapan vitamin", D: "Mencerna protein" },
+                answer: "D",
+                explanation: "Asam lambung (HCl) mengaktifkan pepsinogen menjadi pepsin yang mencerna protein, serta mematikan mikroorganisme patogen pada makanan."
+            },
+            {
+                q: "Tempat mana yang berperan dalam penyimpanan makanan sementara dan pencampuran makanan dengan asam lambung?",
+                options: { A: "Mulut", B: "Usus halus", C: "Lambung", D: "Usus besar" },
+                answer: "C",
+                explanation: "Lambung berfungsi menyimpan makanan sementara (sekitar 2-4 jam) sembari mencampurnya dengan getah dan asam lambung hingga membentuk kimus (chyme)."
+            },
+            {
+                q: "Apa yang terjadi pada makanan dalam usus halus?",
+                options: { A: "Pencernaan mekanis", B: "Pencernaan kimiawi oleh enzim", C: "Pengangkutan menuju lambung", D: "Penguapan ke udara" },
+                answer: "B",
+                explanation: "Di usus halus terjadi pencernaan kimiawi intensif oleh enzim pankreas dan empedu hati hingga nutrisi siap diserap."
+            },
+            {
+                q: "Fungsi apa yang dimiliki oleh usus besar dalam sistem pencernaan?",
+                options: { A: "Penyerapan nutrisi", B: "Pencernaan protein", C: "Pencernaan lemak", D: "Penyerapan air dan pembentukan feses" },
+                answer: "D",
+                explanation: "Usus besar berfungsi mereabsorpsi air dan elektrolit dari sisa makanan yang tidak dicerna, serta memadatkan feses dengan bantuan flora usus."
+            },
+            {
+                q: "Apa yang dimaksud dengan enzim amilase?",
+                options: { A: "Enzim yang mencerna protein", B: "Enzim yang mencerna lemak", C: "Enzim yang mencerna karbohidrat", D: "Enzim yang mencerna serat" },
+                answer: "C",
+                explanation: "Enzim amilase (ptialin) berperan penting menguraikan karbohidrat kompleks (polisakarida/amilum) menjadi maltosa atau disakarida sederhana."
+            },
+            {
+                q: "Nutrisi hasil pencernaan diserap ke dalam aliran darah melalui apa?",
+                options: { A: "Dinding lambung", B: "Usus besar", C: "Usus halus", D: "Kerongkongan" },
+                answer: "C",
+                explanation: "Nutrisi hasil hidrolisis makanan diserap masuk ke kapiler darah dan pembuluh limfe melalui epitel dinding usus halus."
+            },
+            {
+                q: "Proses mekanis di mulut melibatkan bagian alat-alat berikut, KECUALI:",
+                options: { A: "Gigi", B: "Lidah", C: "Tenggorokan", D: "Rahang" },
+                answer: "C",
+                explanation: "Tenggorokan (laring/trakea) merupakan bagian saluran pernapasan. Pengunyahan mekanis di mulut digerakkan oleh otot rahang, gigi, dan lidah."
+            },
+            {
+                q: "Apa fungsi utama enzim tripsin dalam sistem pencernaan?",
+                options: { A: "Mencerna karbohidrat", B: "Mencerna protein", C: "Mencerna lemak", D: "Mencerna serat" },
+                answer: "B",
+                explanation: "Tripsin adalah enzim protease yang dihasilkan oleh pankreas untuk melanjutkan hidrolisis ikatan peptida rantai protein menjadi asam amino."
+            },
+            {
+                q: "Di mana letak pankreas, kelenjar yang menghasilkan enzim-enzim pencernaan?",
+                options: { A: "Di dalam lambung", B: "Di bawah hati", C: "Di depan paru-paru", D: "Di belakang perut" },
+                answer: "D",
+                explanation: "Pankreas terletak di bagian posterior lambung (di belakang rongga perut/retroperitoneal) membentang melintang dekat duodenum."
+            },
+            {
+                q: "Apa nama enzim yang diproduksi oleh kelenjar ludah dan berfungsi untuk mencerna karbohidrat?",
+                options: { A: "Tripsin", B: "Lipase", C: "Pepsin", D: "Amilase" },
+                answer: "D",
+                explanation: "Kelenjar ludah (parotis, submandibularis, sublingualis) menghasilkan saliva yang mengandung enzim amilase (ptialin)."
+            },
+            {
+                q: "Makanan yang sudah dicerna di usus halus diserap melalui bagian mikroskopis apa pada dinding usus?",
+                options: { A: "Selaput lendir", B: "Villus", C: "Kelenjar getah bening", D: "Sel otot" },
+                answer: "B",
+                explanation: "Villus (vili) dan mikrovili merupakan lipatan tonjolan seperti jari pada dinding mukosa usus halus yang memperluas bidang penyerapan nutrisi."
+            },
+            {
+                q: "Apa peran empedu dalam sistem pencernaan manusia?",
+                options: { A: "Mencerna karbohidrat", B: "Mencerna protein", C: "Mencerna lemak", D: "Mencerna serat" },
+                answer: "C",
+                explanation: "Garam empedu mengemulsi gumpalan lemak menjadi butiran kecil (misel) agar dapat dihidrolisis secara efisien oleh enzim lipase."
+            },
+            {
+                q: "Fungsi utama apa yang dimiliki oleh usus halus dalam sistem pencernaan?",
+                options: { A: "Pencernaan mekanis", B: "Penyerapan nutrisi", C: "Penghancuran sel darah merah", D: "Produksi asam pekat" },
+                answer: "B",
+                explanation: "Fungsi paling dominan usus halus adalah penyerapan nutrisi (asam amino, glukosa, asam lemak, vitamin, dan mineral) ke sirkulasi tubuh."
+            },
+            {
+                q: "Apa nama cairan yang diproduksi oleh lambung untuk membantu proses pencernaan?",
+                options: { A: "Empedu", B: "Getah lambung", C: "Getah pankreas", D: "Getah usus" },
+                answer: "B",
+                explanation: "Kelenjar mukosa lambung memproduksi getah lambung (gastric juice) yang berisi HCl, enzim pepsinogen, dan mukus pelindung."
+            },
+            {
+                q: "Apakah yang dimaksud dengan gerakan peristaltik dalam saluran pencernaan?",
+                options: { A: "Gerakan mengunyah makanan", B: "Gerakan mencampur makanan dengan air liur", C: "Gerakan mengangkut makanan dari mulut ke lambung", D: "Gerakan pembuangan gas" },
+                answer: "C",
+                explanation: "Gerakan peristaltik adalah gelombang kontraksi dan relaksasi ritmis otot sirkuler dan longitudinal saluran pencernaan (termasuk esofagus menuju lambung)."
+            },
+            {
+                q: "Di mana sebagian besar penyerapan air dari sisa-sisa makanan terjadi?",
+                options: { A: "Mulut", B: "Lambung", C: "Usus halus", D: "Usus besar" },
+                answer: "D",
+                explanation: "Usus besar (kolon) adalah organ utama yang menyerap sisa air dan elektrolit dari bubur chyme sisa sehingga menghasilkan feses padat."
+            },
+
+            // --- BAGIAN B (21 - 40) ---
+            {
+                q: "Apa fungsi utama rongga mulut dalam sistem pencernaan manusia?",
+                options: { A: "Menghasilkan asam lambung", B: "Menyerap nutrisi utama", C: "Penghancuran makanan dan memulai pencernaan karbohidrat", D: "Penyerapan air maksimal" },
+                answer: "C",
+                explanation: "Mulut menghancurkan makanan secara fisik (mastikasi) dan memulai hidrolisis karbohidrat dengan enzim ptialin saliva."
+            },
+            {
+                q: "Organ apa yang menggerakkan bolus makanan dari mulut ke lambung melalui gerakan peristaltik?",
+                options: { A: "Lambung", B: "Usus Halus", C: "Kerongkongan (Esophagus)", D: "Hati" },
+                answer: "C",
+                explanation: "Kerongkongan (esofagus) adalah tabung muskular sepanjang ±25 cm yang mendorong makanan ke lambung via gelombang kontraksi peristaltik."
+            },
+            {
+                q: "Apa yang dihasilkan oleh lambung untuk membantu pencernaan protein?",
+                options: { A: "Asam lambung (HCl)", B: "Enzim lipase", C: "Empedu", D: "Insulin" },
+                answer: "A",
+                explanation: "Lambung mensekresikan asam lambung (HCl) yang mengasamkan lingkungan (pH 1.5 - 2.0) guna mengaktifkan pepsin pengurai protein."
+            },
+            {
+                q: "Di manakah terjadinya penyerapan nutrisi ke dalam peredaran darah secara masif?",
+                options: { A: "Lambung", B: "Usus Besar", C: "Usus Halus", D: "Kerongkongan" },
+                answer: "C",
+                explanation: "Usus halus dirancang khusus dengan jutaan vili sehingga menjadi tempat utama molekul nutrisi menyeberang ke pembuluh darah vena porta hepatika."
+            },
+            {
+                q: "Apa fungsi utama usus besar dalam sistem pencernaan manusia?",
+                options: { A: "Melakukan pencernaan kimiawi utama", B: "Penyerapan asam lemak", C: "Menyerap air dan membentuk tinja", D: "Menghasilkan hormon insulin" },
+                answer: "C",
+                explanation: "Fungsi usus besar adalah menyerap kembali air tubuh dari materi tak tercerna serta memadatkan feses untuk diekskresikan."
+            },
+            {
+                q: "Organ apa yang menghasilkan cairan empedu untuk membantu mengemulsikan lemak?",
+                options: { A: "Pankreas", B: "Hati", C: "Usus Besar", D: "Lambung" },
+                answer: "B",
+                explanation: "Cairan empedu disintesis oleh sel hepatosit pada organ Hati (hepar), lalu disimpan sementara di kantung empedu sebelum dilepas ke duodenum."
+            },
+            {
+                q: "Enzim apa yang diproduksi oleh kelenjar pankreas untuk memecah amilum menjadi disakarida?",
+                options: { A: "Pepsin", B: "Lipase", C: "Amylase", D: "Trypsin" },
+                answer: "C",
+                explanation: "Pankreas menyekresikan enzim amilase pankreas (amilopsin) yang memecah pati/karbohidrat kompleks menjadi maltosa."
+            },
+            {
+                q: "Di mana bolus makanan dicerna oleh asam lambung dan enzim protease awal?",
+                options: { A: "Usus Halus", B: "Lambung", C: "Usus Besar", D: "Kerongkongan" },
+                answer: "B",
+                explanation: "Di lambung, bolus diaduk dengan getah asam lambung dan enzim pepsin sehingga berubah wujud menjadi bubur kimus."
+            },
+            {
+                q: "Apa nama selaput/dinding tipis serosa yang melapisi organ-organ dalam rongga perut?",
+                options: { A: "Peritoneum", B: "Epidermis", C: "Endokrin", D: "Mesokrin" },
+                answer: "A",
+                explanation: "Peritoneum adalah membran serosa ganda yang melapisi rongga abdominopelvis dan menopang organ-organ visceral di dalamnya."
+            },
+            {
+                q: "Organ apa yang bertanggung jawab untuk detoksifikasi zat-zat berbahaya dan racun dari darah?",
+                options: { A: "Hati", B: "Pankreas", C: "Usus Halus", D: "Lambung" },
+                answer: "A",
+                explanation: "Hati (liver) merupakan organ metabolisme utama yang menetralisir racun, obat-obatan, dan zat kimia berbahaya dari darah sirkulasi."
+            },
+            {
+                q: "Fungsi utama enzim amilase saliva adalah untuk mengawali pemecahan:",
+                options: { A: "Protein", B: "Karbohidrat", C: "Lemak", D: "Serat" },
+                answer: "B",
+                explanation: "Amilase saliva memecah ikatan glikosidik pada rantai polisakarida karbohidrat menjadi disakarida seperti maltosa saat makanan dikunyah."
+            },
+            {
+                q: "Jenis gigi pada manusia yang memiliki ujung runcing dan digunakan untuk merobek makanan adalah:",
+                options: { A: "Gigi seri", B: "Gigi geraham", C: "Gigi taring", D: "Gigi premolar" },
+                answer: "C",
+                explanation: "Gigi taring (dens caninus) berujung runcing kokoh, didesain khusus untuk mencengkeram dan merobek jaringan makanan yang liat."
+            },
+            {
+                q: "Di mana letak posisi anatomis usus halus dalam rongga tubuh manusia?",
+                options: { A: "Di bawah lambung", B: "Di belakang hati", C: "Di antara lambung dan usus besar", D: "Di bawah usus besar" },
+                answer: "C",
+                explanation: "Secara alur pencernaan, usus halus terbentang di antara sfingter pilorus lambung hingga katup ileosekal yang menyambung ke usus besar."
+            },
+            {
+                q: "Apa yang diproduksi secara kontinu oleh sel-sel hepatosit di organ hati?",
+                options: { A: "Empedu", B: "Insulin", C: "Adrenalin", D: "Hemoglobin" },
+                answer: "A",
+                explanation: "Sel hepatosit memproduksi cairan empedu yang mengandung garam empedu, bilirubin, kolesterol, dan elektrolit."
+            },
+            {
+                q: "Organ apa yang bertugas menampung dan membuang air kemih (urin) pada sistem ekskresi?",
+                options: { A: "Usus Besar", B: "Lambung", C: "Kandung Kemih", D: "Pankreas" },
+                answer: "C",
+                explanation: "Kandung kemih (vesika urinaria) adalah organ berotot fleksibel dalam sistem urinaria yang menampung urin sebelum miksi."
+            },
+            {
+                q: "Salah satu fungsi endokrin/eksokrin utama organ pankreas adalah menghasilkan:",
+                options: { A: "Empedu", B: "Enzim pencernaan", C: "Asam lambung", D: "Feses" },
+                answer: "B",
+                explanation: "Sebagai kelenjar eksokrin, asinus pankreas memproduksi enzim penting (amilase, lipase, tripsinogen) untuk disalurkan ke duodenum."
+            },
+            {
+                q: "Apa nama enzim protease yang diaktifkan oleh lambung untuk memecah protein kompleks?",
+                options: { A: "Amilase", B: "Pepsin", C: "Lipase", D: "Tripsin" },
+                answer: "B",
+                explanation: "Pepsin adalah protease lambung aktif yang memecah ikatan rantai polipeptida protein menjadi potongan peptida yang lebih pendek."
+            },
+            {
+                q: "Di manakah proses penyerapan sari makanan terjadi paling optimal dan dominan?",
+                options: { A: "Lambung", B: "Usus Besar", C: "Usus Halus", D: "Kerongkongan" },
+                answer: "C",
+                explanation: "Usus halus (khususnya jejunum & ileum) memiliki luas permukaan absorpsi luas berkat vili dan mikrovili tempat sari makanan diserap."
+            },
+            {
+                q: "Apa fungsi utama kerongkongan (esofagus) dalam sistem pencernaan?",
+                options: { A: "Melakukan pencernaan kimiawi", B: "Penghancuran makanan mekanis", C: "Menggerakkan makanan dari mulut ke lambung", D: "Menyerap nutrisi" },
+                answer: "C",
+                explanation: "Esofagus adalah saluran penghubung berupa lorong berotot yang memindahkan bolus dari faring ke gaster tanpa proses pencernaan enzimatis."
+            },
+            {
+                q: "Apa fungsi utama bagian usus ileum dalam sistem pencernaan manusia?",
+                options: { A: "Penyerapan nutrisi", B: "Menghasilkan asam pekat", C: "Memproduksi empedu", D: "Menyimpan feses kering" },
+                answer: "A",
+                explanation: "Ileum (bagian akhir usus halus) berperan utama menuntaskan penyerapan vitamin B12, garam empedu, serta sisa sari makanan yang belum terserap."
+            }
+        ];
+
+        /* ==========================================================
+           2. MONEY TREE / PRIZE TIERS (15 LEVELS UP TO 1 MILIAR)
+           ========================================================== */
+        const MONEY_TIERS = [
+            { level: 1,  prize: "Rp 50.000",       safe: false },
+            { level: 2,  prize: "Rp 125.000",      safe: false },
+            { level: 3,  prize: "Rp 250.000",      safe: false },
+            { level: 4,  prize: "Rp 500.000",      safe: false },
+            { level: 5,  prize: "Rp 1.000.000",    safe: true },  // Safe Haven 1
+            { level: 6,  prize: "Rp 2.000.000",    safe: false },
+            { level: 7,  prize: "Rp 4.000.000",    safe: false },
+            { level: 8,  prize: "Rp 8.000.000",    safe: false },
+            { level: 9,  prize: "Rp 16.000.000",   safe: false },
+            { level: 10, prize: "Rp 32.000.000",   safe: true },  // Safe Haven 2
+            { level: 11, prize: "Rp 64.000.000",   safe: false },
+            { level: 12, prize: "Rp 125.000.000",  safe: false },
+            { level: 13, prize: "Rp 250.000.000",  safe: false },
+            { level: 14, prize: "Rp 500.000.000",  safe: false },
+            { level: 15, prize: "Rp 1.000.000.000",safe: true }   // GRAND PRIZE
+        ];
+
+        /* ==========================================================
+           3. SOUND EFFECTS SYNTHESIZER (HTML5 WEB AUDIO API)
+           ========================================================== */
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playClick() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.08);
+
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            }
+
+            playSuspensePulse() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                
+                // Deep sub-bass heartbeat pulse
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = "triangle";
+                osc.frequency.setValueAtTime(90, now);
+                osc.frequency.exponentialRampToValueAtTime(45, now + 0.4);
+
+                gain.gain.setValueAtTime(0.6, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.45);
+            }
+
+            playCorrect() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                // Bright heroic 3-note chord: C5 - E5 - G5 - C6
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+                    
+                    gain.gain.setValueAtTime(0.28, now + idx * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.6);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.12);
+                    osc.stop(now + idx * 0.12 + 0.6);
+                });
+            }
+
+            playWrong() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                // Low dissonant buzzer chords
+                [180, 125].forEach(freq => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = "sawtooth";
+                    osc.frequency.setValueAtTime(freq, now);
+                    osc.frequency.linearRampToValueAtTime(freq * 0.7, now + 0.7);
+
+                    gain.gain.setValueAtTime(0.35, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.75);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.75);
+                });
+            }
+
+            playLifeline() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                // Cyber chime
+                [440, 554, 659, 880].forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = "sine";
+                    osc.frequency.setValueAtTime(freq, now + i * 0.08);
+
+                    gain.gain.setValueAtTime(0.2, now + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.08 + 0.35);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.08);
+                    osc.stop(now + i * 0.08 + 0.35);
+                });
+            }
+
+            playVictory() {
+                if (this.muted) return;
+                this.init();
+                const now = this.ctx.currentTime;
+                // Grand Fanfare
+                const notes = [523.25, 523.25, 523.25, 659.25, 783.99, 1046.50];
+                const delays = [0, 0.15, 0.30, 0.50, 0.70, 0.95];
+                const durations = [0.12, 0.12, 0.15, 0.18, 0.22, 1.2];
+
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = "triangle";
+                    osc.frequency.setValueAtTime(freq, now + delays[idx]);
+
+                    gain.gain.setValueAtTime(0.4, now + delays[idx]);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + delays[idx] + durations[idx]);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + delays[idx]);
+                    osc.stop(now + delays[idx] + durations[idx]);
+                });
+            }
+        }
+
+        const audio = new SoundFX();
+
+        function toggleAudio() {
+            audio.muted = !audio.muted;
+            const icon = document.getElementById('soundIcon');
+            const label = document.getElementById('soundLabel');
+            if (audio.muted) {
+                icon.className = "fa-solid fa-volume-xmark text-slate-500";
+                label.innerText = "Suara Bisu";
+            } else {
+                icon.className = "fa-solid fa-volume-high text-amber-400";
+                label.innerText = "Suara Aktif";
+                audio.playClick();
+            }
+        }
+
+        /* ==========================================================
+           4. GAME STATE MANAGEMENT
+           ========================================================== */
+        let activeQuestions = [];
+        let currentQuestionIdx = 0;
+        let isLockedIn = false;
+        let lifelinesUsed = { '5050': false, 'audience': false, 'phone': false, 'switch': false };
+        let historyLog = []; // Stores user answers and questions for final review
+        let currentStudent = { name: "", className: "" };
+
+        // Fisher-Yates Shuffle
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startGame() {
+            // Validate Student Identity Form
+            const nameInput = document.getElementById('inputStudentName');
+            const classInput = document.getElementById('inputStudentClass');
+            const errorMsg = document.getElementById('formErrorMsg');
+
+            const nameVal = nameInput ? nameInput.value.trim() : "";
+            const classVal = classInput ? classInput.value.trim() : "";
+
+            if (!nameVal || !classVal) {
+                if (errorMsg) errorMsg.classList.remove('hidden');
+                if (!nameVal && nameInput) nameInput.focus();
+                else if (classInput) classInput.focus();
+                return;
+            }
+
+            if (errorMsg) errorMsg.classList.add('hidden');
+            currentStudent.name = nameVal;
+            currentStudent.className = classVal;
+
+            audio.playClick();
+
+            // Update top bar labels
+            const activeStudentLbl = document.getElementById('activeStudentLabel');
+            const activeClassLbl = document.getElementById('activeClassLabel');
+            if (activeStudentLbl) activeStudentLbl.innerText = currentStudent.name;
+            if (activeClassLbl) activeClassLbl.innerText = currentStudent.className;
+
+            const navBadge = document.getElementById('playerNavBadge');
+            const navName = document.getElementById('playerNavName');
+            const navClass = document.getElementById('playerNavClass');
+            if (navBadge) {
+                navBadge.classList.remove('hidden');
+                navBadge.classList.add('flex');
+            }
+            if (navName) navName.innerText = currentStudent.name;
+            if (navClass) navClass.innerText = currentStudent.className;
+
+            // Reset lifelines
+            lifelinesUsed = { '5050': false, 'audience': false, 'phone': false, 'switch': false };
+            ['lifeline5050', 'lifelineAudience', 'lifelinePhone', 'lifelineSwitch'].forEach(id => {
+                const btn = document.getElementById(id);
+                btn.disabled = false;
+                btn.classList.remove('opacity-30', 'grayscale', 'line-through');
+            });
+
+            // Randomly select 15 questions from the 40-question bank
+            const pool = shuffleArray(MASTER_QUESTIONS);
+            activeQuestions = pool.slice(0, 15);
+            currentQuestionIdx = 0;
+            isLockedIn = false;
+            historyLog = [];
+
+            // Switch Screen
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
+            document.getElementById('quizScreen').classList.add('grid');
+
+            renderLadder();
+            loadQuestion(currentQuestionIdx);
+        }
+
+        /* ==========================================================
+           5. RENDER QUESTION & ANSWER OPTIONS
+           ========================================================== */
+        function loadQuestion(index) {
+            isLockedIn = false;
+            const qData = activeQuestions[index];
+            const currentTier = MONEY_TIERS[index];
+
+            // Update top bar stats
+            document.getElementById('questionLevelLabel').innerText = `SOAL ${index + 1} / 15`;
+            document.getElementById('currentPrizeLabel').innerText = currentTier.prize;
+            document.getElementById('mobilePrizeDisplay').innerText = currentTier.prize;
+
+            // Update Question Text
+            document.getElementById('questionText').innerText = qData.q;
+
+            // Reset buttons styling
+            const options = ['A', 'B', 'C', 'D'];
+            options.forEach(opt => {
+                const btn = document.getElementById(`btnOpt${opt}`);
+                const label = document.getElementById(`labelOpt${opt}`);
+                btn.className = "millionaire-btn px-6 py-4 text-left flex items-center group";
+                btn.disabled = false;
+                btn.classList.remove('btn-selected', 'btn-correct', 'btn-wrong', 'btn-eliminated');
+                label.innerText = qData.options[opt];
+            });
+
+            highlightLadderTier(index);
+        }
+
+        function highlightLadderTier(currentIdx) {
+            for (let i = 0; i < 15; i++) {
+                const desktopItem = document.getElementById(`ladder-item-${i}`);
+                const mobileItem = document.getElementById(`ladder-mobile-item-${i}`);
+                
+                [desktopItem, mobileItem].forEach(item => {
+                    if (!item) return;
+                    item.className = "px-3 py-1.5 rounded flex items-center justify-between transition-all duration-300 font-tech";
+                    
+                    if (i === currentIdx) {
+                        // Current Question
+                        item.classList.add('bg-gradient-to-r', 'from-amber-500', 'to-yellow-500', 'text-slate-950', 'font-black', 'shadow-lg', 'scale-105');
+                    } else if (i < currentIdx) {
+                        // Already answered questions
+                        item.classList.add('text-emerald-400', 'bg-emerald-950/20', 'border', 'border-emerald-900/40');
+                    } else {
+                        // Future questions
+                        if (MONEY_TIERS[i].safe) {
+                            item.classList.add('text-white', 'font-extrabold', 'bg-slate-900/50');
+                        } else {
+                            item.classList.add('text-amber-300/80', 'hover:bg-slate-900/40');
+                        }
+                    }
+                });
+            }
+        }
+
+        function renderLadder() {
+            const listDesktop = document.getElementById('ladderList');
+            const listMobile = document.getElementById('ladderListMobile');
+            listDesktop.innerHTML = '';
+            listMobile.innerHTML = '';
+
+            MONEY_TIERS.forEach((tier, idx) => {
+                const safeBadge = tier.safe ? '<i class="fa-solid fa-lock text-[10px] text-amber-400 mr-1.5" title="Titik Aman"></i>' : '';
+                
+                const itemHTML = `
+                    <div id="ladder-item-${idx}" class="px-3 py-1.5 rounded flex items-center justify-between font-tech text-xs">
+                        <span class="w-7 font-bold">${idx + 1}</span>
+                        <span class="flex-1 text-right font-extrabold tracking-wider">${safeBadge}${tier.prize}</span>
+                    </div>
+                `;
+                const itemMobileHTML = `
+                    <div id="ladder-mobile-item-${idx}" class="px-3 py-1.5 rounded flex items-center justify-between font-tech text-xs">
+                        <span class="w-7 font-bold">${idx + 1}</span>
+                        <span class="flex-1 text-right font-extrabold tracking-wider">${safeBadge}${tier.prize}</span>
+                    </div>
+                `;
+
+                listDesktop.insertAdjacentHTML('beforeend', itemHTML);
+                listMobile.insertAdjacentHTML('beforeend', itemMobileHTML);
+            });
+        }
+
+        /* ==========================================================
+           6. ANSWER SELECTION & REVEAL SUSPENSE LOGIC
+           ========================================================== */
+        function handleOptionSelect(selectedOption) {
+            if (isLockedIn) return;
+            isLockedIn = true;
+            audio.playClick();
+
+            const selectedBtn = document.getElementById(`btnOpt${selectedOption}`);
+            selectedBtn.classList.add('btn-selected');
+
+            // Disable all other buttons during suspense
+            ['A', 'B', 'C', 'D'].forEach(opt => {
+                document.getElementById(`btnOpt${opt}`).disabled = true;
+            });
+
+            // Dramatic heartbeat suspense pulses
+            audio.playSuspensePulse();
+            const pulseTimer = setTimeout(() => {
+                audio.playSuspensePulse();
+            }, 900);
+
+            // Reveal answer after 2.0 seconds of tension
+            setTimeout(() => {
+                revealAnswer(selectedOption);
+            }, 2000);
+        }
+
+        function revealAnswer(userChoice) {
+            const qData = activeQuestions[currentQuestionIdx];
+            const isCorrect = (userChoice === qData.answer);
+            const selectedBtn = document.getElementById(`btnOpt${userChoice}`);
+            const correctBtn = document.getElementById(`btnOpt${qData.answer}`);
+
+            selectedBtn.classList.remove('btn-selected');
+
+            // Record into review log
+            historyLog.push({
+                question: qData.q,
+                userChoice: userChoice,
+                correctChoice: qData.answer,
+                userChoiceText: qData.options[userChoice],
+                correctChoiceText: qData.options[qData.answer],
+                isCorrect: isCorrect,
+                explanation: qData.explanation,
+                level: currentQuestionIdx + 1,
+                prize: MONEY_TIERS[currentQuestionIdx].prize
+            });
+
+            if (isCorrect) {
+                correctBtn.classList.add('btn-correct');
+                audio.playCorrect();
+
+                setTimeout(() => {
+                    showExplanationModal(true, qData);
+                }, 1300);
+            } else {
+                selectedBtn.classList.add('btn-wrong');
+                correctBtn.classList.add('btn-correct');
+                audio.playWrong();
+
+                setTimeout(() => {
+                    showExplanationModal(false, qData);
+                }, 1600);
+            }
+        }
+
+        /* ==========================================================
+           7. EXPLANATION MODAL & PROGRESSION
+           ========================================================== */
+        let lastAnswerWasCorrect = false;
+
+        function showExplanationModal(isCorrect, qData) {
+            lastAnswerWasCorrect = isCorrect;
+            const modal = document.getElementById('explanationModal');
+            const icon = document.getElementById('feedbackIcon');
+            const title = document.getElementById('feedbackTitle');
+            const badge = document.getElementById('explanationBadge');
+            const correctFull = document.getElementById('correctAnswerFull');
+            const content = document.getElementById('explanationContent');
+            const nextBtn = document.getElementById('nextQuestionBtn');
+
+            badge.innerText = `LEVEL ${currentQuestionIdx + 1} (${MONEY_TIERS[currentQuestionIdx].prize})`;
+            correctFull.innerText = `${qData.answer}. ${qData.options[qData.answer]}`;
+            content.innerText = qData.explanation;
+
+            if (isCorrect) {
+                icon.className = "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm bg-emerald-600 font-bold shadow-md shadow-emerald-700";
+                icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                title.innerText = "Jawaban Tepat & Benar!";
+                title.className = "text-base font-bold text-emerald-400";
+                
+                if (currentQuestionIdx === 14) {
+                    nextBtn.innerHTML = `<span>RAIH RP 1 MILIAR!</span> <i class="fa-solid fa-trophy"></i>`;
+                } else {
+                    nextBtn.innerHTML = `<span>Lanjut ke Soal Berikutnya</span> <i class="fa-solid fa-arrow-right"></i>`;
+                }
+            } else {
+                icon.className = "w-8 h-8 rounded-full flex items-center justify-center text-white text-sm bg-red-600 font-bold shadow-md shadow-red-700";
+                icon.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+                title.innerText = "Jawaban Kurang Tepat!";
+                title.className = "text-base font-bold text-red-400";
+                nextBtn.innerHTML = `<span>Lihat Hasil Akhir</span> <i class="fa-solid fa-flag-checkered"></i>`;
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function proceedAfterExplanation() {
+            closeModal('explanationModal');
+            audio.playClick();
+
+            if (lastAnswerWasCorrect) {
+                if (currentQuestionIdx < 14) {
+                    currentQuestionIdx++;
+                    loadQuestion(currentQuestionIdx);
+                } else {
+                    // Won Level 15 (Rp 1.000.000.000)
+                    endGame(true);
+                }
+            } else {
+                // Wrong answer game over
+                endGame(false);
+            }
+        }
+
+        /* ==========================================================
+           8. LIFELINES IMPLEMENTATION
+           ========================================================== */
+        // Lifeline 1: 50:50
+        function use5050() {
+            if (isLockedIn || lifelinesUsed['5050']) return;
+            lifelinesUsed['5050'] = true;
+            audio.playLifeline();
+
+            const btn = document.getElementById('lifeline5050');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'grayscale', 'line-through');
+
+            const qData = activeQuestions[currentQuestionIdx];
+            const wrongOptions = ['A', 'B', 'C', 'D'].filter(opt => opt !== qData.answer);
+            const shuffledWrong = shuffleArray(wrongOptions);
+            const toEliminate = shuffledWrong.slice(0, 2);
+
+            toEliminate.forEach(opt => {
+                const optBtn = document.getElementById(`btnOpt${opt}`);
+                optBtn.classList.add('btn-eliminated');
+                optBtn.disabled = true;
+            });
+        }
+
+        // Lifeline 2: Tanya Penonton (Audience Poll)
+        function useAudience() {
+            if (isLockedIn || lifelinesUsed['audience']) return;
+            lifelinesUsed['audience'] = true;
+            audio.playLifeline();
+
+            const btn = document.getElementById('lifelineAudience');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'grayscale', 'line-through');
+
+            const qData = activeQuestions[currentQuestionIdx];
+            const correctOpt = qData.answer;
+
+            // Generate realistic poll distribution with bias towards correct answer (65% - 85%)
+            let correctPct = Math.floor(Math.random() * 20) + 65;
+            let remaining = 100 - correctPct;
+
+            let others = ['A', 'B', 'C', 'D'].filter(opt => opt !== correctOpt);
+            let p1 = Math.floor(Math.random() * (remaining - 4));
+            let p2 = Math.floor(Math.random() * (remaining - p1 - 2));
+            let p3 = remaining - p1 - p2;
+
+            let pollData = {};
+            pollData[correctOpt] = correctPct;
+            pollData[others[0]] = p1;
+            pollData[others[1]] = p2;
+            pollData[others[2]] = p3;
+
+            ['A', 'B', 'C', 'D'].forEach(opt => {
+                const pct = pollData[opt];
+                document.getElementById(`pollPct${opt}`).innerText = `${pct}%`;
+                const bar = document.getElementById(`pollBar${opt}`);
+                bar.style.height = `${pct}%`;
+                if (opt === correctOpt) {
+                    bar.className = "w-full bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-md transition-all duration-700";
+                } else {
+                    bar.className = "w-full bg-gradient-to-t from-sky-700 to-sky-400 rounded-t-md transition-all duration-700";
+                }
+            });
+
+            const modal = document.getElementById('audienceModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Lifeline 3: Telepon Teman (Phone a Friend)
+        function usePhone() {
+            if (isLockedIn || lifelinesUsed['phone']) return;
+            lifelinesUsed['phone'] = true;
+            audio.playLifeline();
+
+            const btn = document.getElementById('lifelinePhone');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'grayscale', 'line-through');
+
+            const qData = activeQuestions[currentQuestionIdx];
+            const correctOpt = qData.answer;
+            const correctText = qData.options[correctOpt];
+
+            const hints = [
+                `"Halo! Saya sangat yakin dengan soal ini. Berdasarkan fungsi sistem pencernaan, jawabannya pasti pilihan ${correctOpt}: '${correctText}'!"`,
+                `"Hai! Pertanyaan bagus! Kalau saya telaah buku fisiologi, pilihan yang paling tepat adalah ${correctOpt} (${correctText}). Saya yakin 95%!"`,
+                `"Waktunya mepet ya? Jangan ragu, pilih saja opsi ${correctOpt} yaitu '${correctText}', itu mutlak benar dalam modul pencernaan."`
+            ];
+
+            const hint = hints[Math.floor(Math.random() * hints.length)];
+            document.getElementById('friendResponseText').innerText = hint;
+
+            const modal = document.getElementById('phoneModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // Lifeline 4: Ganti Soal (Switch Question)
+        function useSwitch() {
+            if (isLockedIn || lifelinesUsed['switch']) return;
+            lifelinesUsed['switch'] = true;
+            audio.playLifeline();
+
+            const btn = document.getElementById('lifelineSwitch');
+            btn.disabled = true;
+            btn.classList.add('opacity-30', 'grayscale', 'line-through');
+
+            // Find an unused question from the 40 question pool
+            const activeQsText = activeQuestions.map(item => item.q);
+            const unusedPool = MASTER_QUESTIONS.filter(item => !activeQsText.includes(item.q));
+
+            if (unusedPool.length > 0) {
+                const replacement = unusedPool[Math.floor(Math.random() * unusedPool.length)];
+                activeQuestions[currentQuestionIdx] = replacement;
+                loadQuestion(currentQuestionIdx);
+            }
+        }
+
+        /* ==========================================================
+           9. WALK AWAY (MENGUNDURKAN DIRI / BAWA PULANG UANG)
+           ========================================================== */
+        function confirmWalkAway() {
+            if (isLockedIn) return;
+            audio.playClick();
+
+            let currentSafePrize = "Rp 0";
+            if (currentQuestionIdx > 0) {
+                currentSafePrize = MONEY_TIERS[currentQuestionIdx - 1].prize;
+            }
+
+            // Custom modal confirmation prompt without alert()
+            const confirmed = window.confirm(`Apakah Anda yakin ingin mengundurkan diri dan membawa pulang hadiah ${currentSafePrize}?`);
+            if (confirmed) {
+                endGame(false, true);
+            }
+        }
+
+        /* ==========================================================
+           10. END GAME & REVIEW REPORT
+           ========================================================== */
+        function endGame(isGrandPrize, isWalkAway = false) {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('grid');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            document.getElementById('resultScreen').classList.add('flex');
+
+            const resultBadge = document.getElementById('resultBadge');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultSubtitle = document.getElementById('resultSubtitle');
+            const resultPrizeAmount = document.getElementById('resultPrizeAmount');
+            const statAnswered = document.getElementById('statAnswered');
+            const statLifelines = document.getElementById('statLifelines');
+
+            // Set student certificate info
+            const resName = document.getElementById('resultStudentName');
+            const resClass = document.getElementById('resultStudentClass');
+            if (resName) resName.innerText = currentStudent.name || "Peserta Kuis";
+            if (resClass) resClass.innerText = currentStudent.className || "Kelas Biologi";
+
+            let finalPrize = "Rp 0";
+
+            if (isGrandPrize) {
+                audio.playVictory();
+                resultBadge.innerHTML = `<i class="fa-solid fa-crown text-amber-400"></i>`;
+                resultTitle.innerText = "SELAMAT! ANDA MILIARDER!";
+                resultSubtitle.innerText = `Prestasi luar biasa, ${currentStudent.name}! Anda berhasil menaklukkan 15 butir soal dan menguasai seluruh konsep Sistem Pencernaan.`;
+                finalPrize = "Rp 1.000.000.000";
+            } else if (isWalkAway) {
+                audio.playClick();
+                resultBadge.innerHTML = `<i class="fa-solid fa-hand-holding-dollar text-emerald-400"></i>`;
+                resultTitle.innerText = "Keputusan Bijak!";
+                resultSubtitle.innerText = `Selamat untuk ${currentStudent.name}! Anda memilih mengundurkan diri dengan aman dan membawa pulang perolehan hadiah Anda.`;
+                finalPrize = currentQuestionIdx > 0 ? MONEY_TIERS[currentQuestionIdx - 1].prize : "Rp 0";
+            } else {
+                // Wrong answer: calculate safe haven amount
+                resultBadge.innerHTML = `<i class="fa-solid fa-heart-crack text-red-400"></i>`;
+                resultTitle.innerText = "Permainan Berakhir";
+                resultSubtitle.innerText = `Terima kasih atas partisipasinya, ${currentStudent.name}! Jangan patah semangat, terus pelajari biologi sistem pencernaan!`;
+
+                if (currentQuestionIdx >= 10) {
+                    finalPrize = "Rp 32.000.000"; // Safe level 10
+                } else if (currentQuestionIdx >= 5) {
+                    finalPrize = "Rp 1.000.000";  // Safe level 5
+                } else {
+                    finalPrize = "Rp 0";
+                }
+            }
+
+            resultPrizeAmount.innerText = finalPrize;
+            statAnswered.innerText = `${historyLog.filter(h => h.isCorrect).length} / 15`;
+
+            const usedCount = Object.values(lifelinesUsed).filter(Boolean).length;
+            statLifelines.innerText = `${usedCount} / 4`;
+        }
+
+        function openReviewModal() {
+            audio.playClick();
+            const list = document.getElementById('reviewList');
+            list.innerHTML = '';
+
+            if (historyLog.length === 0) {
+                list.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">Belum ada riwayat soal yang dimainkan.</p>`;
+            } else {
+                historyLog.forEach((item, index) => {
+                    const statusClass = item.isCorrect 
+                        ? 'border-emerald-500/60 bg-emerald-950/20' 
+                        : 'border-red-500/60 bg-red-950/20';
+                    const iconStatus = item.isCorrect 
+                        ? '<span class="text-emerald-400 font-bold"><i class="fa-solid fa-check mr-1"></i> Benar</span>' 
+                        : '<span class="text-red-400 font-bold"><i class="fa-solid fa-xmark mr-1"></i> Salah</span>';
+
+                    const itemHTML = `
+                        <div class="p-4 rounded-xl border ${statusClass} text-xs sm:text-sm">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-amber-400 font-tech">Soal #${index + 1} (${item.prize})</span>
+                                ${iconStatus}
+                            </div>
+                            <p class="font-semibold text-slate-100 mb-2">${item.question}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-3">
+                                <div class="bg-slate-900/80 p-2 rounded border border-slate-800">
+                                    <span class="text-slate-400 block">Pilihan Anda:</span>
+                                    <span class="${item.isCorrect ? 'text-emerald-300' : 'text-red-300'} font-bold">${item.userChoice}. ${item.userChoiceText}</span>
+                                </div>
+                                <div class="bg-slate-900/80 p-2 rounded border border-slate-800">
+                                    <span class="text-slate-400 block">Kunci Jawaban:</span>
+                                    <span class="text-emerald-400 font-bold">${item.correctChoice}. ${item.correctChoiceText}</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-950/90 p-2.5 rounded border border-sky-950 text-slate-300 text-xs">
+                                <strong class="text-amber-300"><i class="fa-solid fa-circle-info mr-1"></i> Pembahasan:</strong> ${item.explanation}
+                            </div>
+                        </div>
+                    `;
+                    list.insertAdjacentHTML('beforeend', itemHTML);
+                });
+            }
+
+            const modal = document.getElementById('reviewModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        /* ==========================================================
+           11. MODAL & DRAWER HELPERS
+           ========================================================== */
+        function closeModal(modalId) {
+            audio.playClick();
+            const modal = document.getElementById(modalId);
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function toggleLadderDrawer() {
+            audio.playClick();
+            const drawer = document.getElementById('mobileLadderDrawer');
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+            } else {
+                drawer.classList.add('translate-x-full');
+            }
+        }
+    </script>
+</body>
+</html>
