@@ -106,6 +106,7 @@
 
         ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #020617;
@@ -135,7 +136,13 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2 sm:gap-4">
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Tombol Menu Rekap Guru -->
+            <button onclick="promptTeacherAccess()" class="px-3 py-1.5 rounded-lg border border-emerald-500/50 bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition shadow-sm" title="Buka Rekap Data Hasil Evaluasi Guru">
+                <i class="fa-solid fa-chart-line text-emerald-400"></i>
+                <span class="hidden md:inline">Rekap Guru</span>
+            </button>
+
             <!-- Active Player Badge on Navbar -->
             <div id="playerNavBadge" class="hidden sm:hidden items-center gap-2 px-3 py-1 bg-slate-900/90 border border-sky-800 rounded-lg text-xs">
                 <i class="fa-solid fa-user-graduate text-amber-400"></i>
@@ -390,6 +397,129 @@
 
     <!-- ================= MODALS & POPUPS ================= -->
 
+    <!-- Modal 0: Teacher PIN Access Modal -->
+    <div id="teacherPinModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border-2 border-emerald-500/70 rounded-2xl max-w-sm w-full p-6 shadow-2xl text-center">
+            <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-400 text-emerald-400 text-xl flex items-center justify-center mx-auto mb-3">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-1">Akses Guru</h3>
+            <p class="text-xs text-slate-400 mb-4">Masukkan PIN Pengaman untuk melihat rekap data hasil pengerjaan siswa:</p>
+            <input type="password" id="inputTeacherPin" placeholder="Masukkan PIN (Default: 123456)" maxlength="10"
+                   class="w-full text-center px-4 py-2.5 bg-slate-950 border border-slate-700 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 rounded-xl text-white tracking-widest text-lg outline-none mb-2"
+                   onkeydown="if(event.key==='Enter')verifyTeacherPin()" />
+            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-semibold mb-3">PIN salah! Silakan coba lagi.</p>
+            <div class="flex gap-2">
+                <button onclick="closeModal('teacherPinModal')" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs transition">Batal</button>
+                <button onclick="verifyTeacherPin()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition">Buka Rekap</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 0.5: Dashboard Rekap Data Guru Lengkap -->
+    <div id="teacherDashboardModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden items-center justify-center p-2 sm:p-4">
+        <div class="bg-slate-900 border border-sky-800 rounded-2xl max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/60 flex items-center justify-center text-emerald-400 text-lg">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                            Rekap Data Evaluasi Siswa Kelas 8
+                        </h3>
+                        <p class="text-xs text-slate-400">Terhubung langsung dengan Google Spreadsheet Guru</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('teacherDashboardModal')" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <!-- Dashboard Summary Stat Cards -->
+            <div class="p-4 border-b border-slate-800/80 bg-slate-950/40 grid grid-cols-2 md:grid-cols-4 gap-2.5">
+                <div class="bg-slate-900/90 border border-sky-900/60 p-3 rounded-xl text-center">
+                    <span class="text-[11px] text-slate-400 uppercase font-semibold block">Total Pengerjaan</span>
+                    <strong id="statTotalSubmissions" class="text-xl sm:text-2xl font-tech text-sky-400">0</strong>
+                </div>
+                <div class="bg-slate-900/90 border border-amber-900/60 p-3 rounded-xl text-center">
+                    <span class="text-[11px] text-slate-400 uppercase font-semibold block">Rata-Rata Nilai</span>
+                    <strong id="statAvgScore" class="text-xl sm:text-2xl font-tech text-amber-400">0.0</strong>
+                </div>
+                <div class="bg-slate-900/90 border border-emerald-900/60 p-3 rounded-xl text-center">
+                    <span class="text-[11px] text-slate-400 uppercase font-semibold block">Nilai Tertinggi</span>
+                    <strong id="statHighestScore" class="text-xl sm:text-2xl font-tech text-emerald-400">0</strong>
+                </div>
+                <div class="bg-slate-900/90 border border-purple-900/60 p-3 rounded-xl text-center">
+                    <span class="text-[11px] text-slate-400 uppercase font-semibold block">Tuntas (>= 70)</span>
+                    <strong id="statPassedCount" class="text-xl sm:text-2xl font-tech text-purple-400">0 Siswa</strong>
+                </div>
+            </div>
+
+            <!-- Filter & Action Controls -->
+            <div class="p-3 sm:px-5 sm:py-3 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2.5 bg-slate-900">
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <label for="filterStudentSelect" class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filter Siswa:</label>
+                    <select id="filterStudentSelect" onchange="renderTeacherTable()" class="bg-slate-950 border border-slate-700 text-xs text-white rounded-lg px-2.5 py-1.5 outline-none focus:border-sky-400">
+                        <option value="ALL">Semua Siswa (5 Orang)</option>
+                        <option value="Juma'ah">Juma'ah</option>
+                        <option value="Sanin">Sanin</option>
+                        <option value="Silvi Livia">Silvi Livia</option>
+                        <option value="Siut">Siut</option>
+                        <option value="Yita">Yita</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    <button onclick="fetchTeacherData()" class="px-3 py-1.5 bg-sky-700 hover:bg-sky-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i id="btnRefreshIcon" class="fa-solid fa-arrows-rotate"></i> Refresh Data
+                    </button>
+                    <button onclick="exportTeacherDataToCSV()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-file-csv text-emerald-400"></i> Ekspor CSV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="p-3 sm:p-5 overflow-auto flex-1 bg-slate-950/60">
+                <div id="teacherLoadingBox" class="py-12 text-center text-slate-400 text-xs">
+                    <i class="fa-solid fa-circle-notch fa-spin text-2xl text-sky-400 mb-2"></i>
+                    <p>Memuat rekap data dari Google Sheets...</p>
+                </div>
+                <table id="teacherDataTable" class="w-full text-left text-xs hidden border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-slate-400 uppercase font-semibold text-[11px] bg-slate-900/90">
+                            <th class="py-2.5 px-3">No</th>
+                            <th class="py-2.5 px-3">Waktu Pengerjaan</th>
+                            <th class="py-2.5 px-3">Nama Siswa</th>
+                            <th class="py-2.5 px-3 text-center">Kelas</th>
+                            <th class="py-2.5 px-3 text-center">Nilai</th>
+                            <th class="py-2.5 px-3 text-center">B / S</th>
+                            <th class="py-2.5 px-3">Status Hasil</th>
+                            <th class="py-2.5 px-3 text-center">Durasi</th>
+                            <th class="py-2.5 px-3">Bantuan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teacherTableBody" class="divide-y divide-slate-800 text-slate-300">
+                        <!-- Injected via JavaScript -->
+                    </tbody>
+                </table>
+                <div id="teacherEmptyBox" class="hidden py-10 text-center text-slate-400 text-xs">
+                    <i class="fa-regular fa-folder-open text-2xl text-slate-500 mb-2"></i>
+                    <p>Belum ada rekaman data evaluasi yang sesuai dengan filter.</p>
+                </div>
+            </div>
+
+            <!-- Footer Close -->
+            <div class="p-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between text-xs text-slate-500">
+                <span>Total baris: <b id="tableRowCount" class="text-slate-300">0</b></span>
+                <button onclick="closeModal('teacherDashboardModal')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-semibold transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal 1: Tanya Penonton / Rekan -->
     <div id="audienceModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-slate-900 border-2 border-sky-400 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center">
@@ -521,6 +651,7 @@
            KONFIGURASI GOOGLE APPS SCRIPT WEB APP URL (TERPASANG AKTIF)
            ========================================================== */
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwbXFQbXBJmQpjtB174IUiAi_QZzjM57SuHvII5IwqtM2yd02mPwEw5rFeBiU0jeIy3dQ/exec";
+        const TEACHER_PIN = "123456"; // PIN Pengaman Guru (Dapat Anda sesuaikan)
 
         /* ==========================================================
            1. MASTER QUESTION BANK (40 SOAL LENGKAP UTUH)
@@ -1403,12 +1534,11 @@
                 resultTitle.innerText = "Evaluasi Selesai";
                 resultSubtitle.innerText = `Terima kasih atas partisipasinya, ${currentStudent.name}. Evaluasi ini menjadi dasar untuk penguatan materi yang belum dikuasai.`;
 
-                // Logika Ambang Aman
                 if (currentQuestionIdx >= 10) {
-                    finalNumericScore = 70; // Batas aman level 10
+                    finalNumericScore = 70;
                     statusText = "Tuntas Batas Aman (Level 10)";
                 } else if (currentQuestionIdx >= 5) {
-                    finalNumericScore = 35; // Batas aman level 5
+                    finalNumericScore = 35;
                     statusText = "Batas Aman (Level 5)";
                 } else {
                     finalNumericScore = 0;
@@ -1423,7 +1553,6 @@
             statCorrect.innerText = correctCount;
             statWrong.innerText = wrongCount;
 
-            // Durasi pengerjaan
             const endTime = new Date();
             const elapsedSec = Math.floor((endTime - (quizStartTime || endTime)) / 1000);
             const minutes = Math.floor(elapsedSec / 60);
@@ -1438,7 +1567,6 @@
             if (lifelinesUsed['switch']) usedLifelinesList.push('Ganti Soal');
             statLifelines.innerText = `${usedLifelinesList.length} / 4`;
 
-            // Pengiriman otomatis ke Google Apps Script Spreadsheet
             sendDataToGoogleSheets({
                 timestamp: new Date().toLocaleString("id-ID", { dateStyle: "full", timeStyle: "medium" }),
                 nama: currentStudent.name,
@@ -1482,6 +1610,190 @@
             });
         }
 
+        /* ==========================================================
+           11. MODAL REKAP GURU & INTEGRASI GET DARI GOOGLE SHEETS
+           ========================================================== */
+        let teacherDataCache = [];
+
+        function promptTeacherAccess() {
+            audio.playClick();
+            const modal = document.getElementById('teacherPinModal');
+            const input = document.getElementById('inputTeacherPin');
+            const error = document.getElementById('pinErrorMsg');
+            if (input) input.value = '';
+            if (error) error.classList.add('hidden');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => { if (input) input.focus(); }, 150);
+        }
+
+        function verifyTeacherPin() {
+            const input = document.getElementById('inputTeacherPin');
+            const error = document.getElementById('pinErrorMsg');
+            if (input && input.value.trim() === TEACHER_PIN) {
+                closeModal('teacherPinModal');
+                openTeacherDashboard();
+            } else {
+                if (error) error.classList.remove('hidden');
+                if (input) {
+                    input.value = '';
+                    input.focus();
+                }
+            }
+        }
+
+        function openTeacherDashboard() {
+            audio.playClick();
+            const modal = document.getElementById('teacherDashboardModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            fetchTeacherData();
+        }
+
+        function fetchTeacherData() {
+            const loading = document.getElementById('teacherLoadingBox');
+            const table = document.getElementById('teacherDataTable');
+            const empty = document.getElementById('teacherEmptyBox');
+            const btnRefreshIcon = document.getElementById('btnRefreshIcon');
+
+            if (btnRefreshIcon) btnRefreshIcon.classList.add('fa-spin');
+            if (loading) loading.classList.remove('hidden');
+            if (table) table.classList.add('hidden');
+            if (empty) empty.classList.add('hidden');
+
+            fetch(GOOGLE_SCRIPT_URL)
+                .then(res => res.json())
+                .then(res => {
+                    if (res && res.status === 'success' && Array.isArray(res.data)) {
+                        teacherDataCache = res.data;
+                    } else if (Array.isArray(res)) {
+                        teacherDataCache = res;
+                    } else {
+                        teacherDataCache = [];
+                    }
+                    renderTeacherTable();
+                })
+                .catch(err => {
+                    console.error("Gagal mengambil data dari Google Sheets:", err);
+                    // Jika fetch langsung diblokir oleh CORS browser, fallback pesan informatif
+                    alert("Gagal memuat otomatis dari Google Sheets. Pastikan deployment Web App disetel akses: 'Siapa Saja (Anyone)'.");
+                    if (loading) loading.classList.add('hidden');
+                    if (empty) empty.classList.remove('hidden');
+                })
+                .finally(() => {
+                    if (btnRefreshIcon) btnRefreshIcon.classList.remove('fa-spin');
+                });
+        }
+
+        function renderTeacherTable() {
+            const loading = document.getElementById('teacherLoadingBox');
+            const table = document.getElementById('teacherDataTable');
+            const empty = document.getElementById('teacherEmptyBox');
+            const tbody = document.getElementById('teacherTableBody');
+            const filterVal = document.getElementById('filterStudentSelect').value;
+
+            if (loading) loading.classList.add('hidden');
+            tbody.innerHTML = '';
+
+            let filtered = teacherDataCache.filter(item => {
+                if (!item.nama) return false;
+                if (filterVal === 'ALL') return true;
+                return item.nama.toLowerCase().includes(filterVal.toLowerCase());
+            });
+
+            // Urutkan dari data paling terbaru (asumsi baris bawah di sheets = terbaru)
+            filtered = filtered.reverse();
+
+            // Hitung Metrik Statistik Ringkasan
+            const total = filtered.length;
+            let sumScore = 0;
+            let maxScore = 0;
+            let passedCount = 0;
+
+            filtered.forEach(item => {
+                const sc = Number(item.nilai) || 0;
+                sumScore += sc;
+                if (sc > maxScore) maxScore = sc;
+                if (sc >= 70) passedCount++;
+            });
+
+            const avgScore = total > 0 ? (sumScore / total).toFixed(1) : "0.0";
+
+            document.getElementById('statTotalSubmissions').innerText = total;
+            document.getElementById('statAvgScore').innerText = avgScore;
+            document.getElementById('statHighestScore').innerText = maxScore;
+            document.getElementById('statPassedCount').innerText = `${passedCount} Kali`;
+            document.getElementById('tableRowCount').innerText = total;
+
+            if (filtered.length === 0) {
+                if (table) table.classList.add('hidden');
+                if (empty) empty.classList.remove('hidden');
+                return;
+            }
+
+            if (empty) empty.classList.add('hidden');
+            if (table) table.classList.remove('hidden');
+
+            filtered.forEach((row, idx) => {
+                const scoreNum = Number(row.nilai) || 0;
+                const scoreColor = scoreNum >= 70 ? 'text-emerald-400 font-extrabold' : 'text-amber-400 font-bold';
+                const statusBadge = scoreNum >= 70 
+                    ? '<span class="px-2 py-0.5 rounded text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-800">Tuntas</span>'
+                    : '<span class="px-2 py-0.5 rounded text-[10px] bg-red-950 text-red-300 border border-red-800">Belum Tuntas</span>';
+
+                const tr = `
+                    <tr class="hover:bg-slate-800/50 transition">
+                        <td class="py-2.5 px-3 font-tech text-slate-500">${idx + 1}</td>
+                        <td class="py-2.5 px-3 text-slate-300 whitespace-nowrap">${row.timestamp || '-'}</td>
+                        <td class="py-2.5 px-3 font-bold text-sky-200">${row.nama}</td>
+                        <td class="py-2.5 px-3 text-center text-slate-400">${row.kelas || 'Kelas 8'}</td>
+                        <td class="py-2.5 px-3 text-center font-tech text-sm ${scoreColor}">${row.nilai}</td>
+                        <td class="py-2.5 px-3 text-center text-slate-300 font-semibold">${row.jumlahBenar || 0} / ${row.jumlahSalah || 0}</td>
+                        <td class="py-2.5 px-3 whitespace-nowrap">${statusBadge} <span class="text-[11px] text-slate-400 ml-1">${row.status || ''}</span></td>
+                        <td class="py-2.5 px-3 text-center font-tech text-slate-400">${row.durasi || '-'}</td>
+                        <td class="py-2.5 px-3 text-slate-400 text-[11px]">${row.bantuanDipakai || '-'}</td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', tr);
+            });
+        }
+
+        function exportTeacherDataToCSV() {
+            if (!teacherDataCache || teacherDataCache.length === 0) {
+                alert("Belum ada data untuk diekspor!");
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Timestamp,Nama Siswa,Kelas,Nilai,Jumlah Benar,Jumlah Salah,Level Dicapai,Status,Durasi,Bantuan Dipakai\n";
+
+            teacherDataCache.forEach(r => {
+                const rowStr = [
+                    `"${r.timestamp || ''}"`,
+                    `"${r.nama || ''}"`,
+                    `"${r.kelas || ''}"`,
+                    `"${r.nilai || 0}"`,
+                    `"${r.jumlahBenar || 0}"`,
+                    `"${r.jumlahSalah || 0}"`,
+                    `"${r.levelDicapai || ''}"`,
+                    `"${r.status || ''}"`,
+                    `"${r.durasi || ''}"`,
+                    `"${r.bantuanDipakai || ''}"`
+                ].join(",");
+                csvContent += rowStr + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Rekap_Nilai_Kuis_Kelas8_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        /* ==========================================================
+           12. REVIEW MODAL & POPUP HELPERS
+           ========================================================== */
         function openReviewModal() {
             audio.playClick();
             const list = document.getElementById('reviewList');
@@ -1529,9 +1841,6 @@
             modal.classList.add('flex');
         }
 
-        /* ==========================================================
-           11. MODAL & DRAWER HELPERS
-           ========================================================== */
         function closeModal(modalId) {
             audio.playClick();
             const modal = document.getElementById(modalId);
